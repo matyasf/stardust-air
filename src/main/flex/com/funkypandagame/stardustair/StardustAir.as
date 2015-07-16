@@ -33,6 +33,7 @@ add a "save" button
     private var _urlLoader : URLLoader = new URLLoader;
     private var loadedBA : ByteArray;
     private var loadedFileName : String;
+    private var isAppReady : Boolean = false;
 
     public function StardustAir()
     {
@@ -58,6 +59,11 @@ add a "save" button
             loadedBA = new ByteArray();
             fileStream.readBytes(loadedBA);
             fileStream.close();
+            if (isAppReady)
+            {
+                var stardustTool : Object = Object(loader.content).application;
+                stardustTool.loadExternalSim(loadedBA, loadedFileName);
+            }
         }
     }
 
@@ -82,6 +88,7 @@ add a "save" button
 
     private function onStardustReady(evt : FlexEvent) : void
     {
+        isAppReady = true;
         if (loadedBA)
         {
             var stardustTool : Object = Object(loader.content).application;
