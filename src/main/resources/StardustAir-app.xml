@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="utf-8" ?>
-
-<!-- Adobe AIR Application Descriptor File Template.
-     Specifies parameters for identifying, installing, and launching AIR applications.
-
-     xmlns - The Adobe AIR namespace: http://ns.adobe.com/air/application/15.0.
-     The last segment of the namespace specifies the version of the AIR runtime required for this application to run.
-
-     minimumPatchLevel - The minimum patch level of the AIR runtime required to run the application. Optional. -->
-
 <application xmlns="http://ns.adobe.com/air/application/15.0">
 
     <!-- A universally unique application identifier. Must be unique across all AIR applications.
@@ -32,18 +23,7 @@
     <!--<version>0.0.0</version>-->
 
     <!-- Description, displayed in the AIR application installer. May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <!--<description></description>-->
-
-    <!-- Copyright information. Optional -->
-    <!--<copyright></copyright>-->
-
-    <!-- Publisher ID. Used if you're updating an application created prior to 1.5.3 -->
-    <!--<publisherID></publisherID>-->
-
-    <!-- Identifies the ActionScript extensions used by an application. -->
-    <!--<extensions>
-        <extensionID></extensionID>
-    </extensions>-->
+    <description>Application for editing .sde files. Needs internet connection to work. For details see http://wiki.starling-framework.org/extensions/stardust-engine</description>
 
     <!-- Settings for the application's initial window. Required. -->
     <initialWindow>
@@ -62,20 +42,11 @@
         <!-- Whether the window is initially visible. Optional. Default false. -->
         <visible>true</visible>
 
-        <!-- Whether the user can minimize the window. Optional. Default true. -->
-        <!--<minimizable></minimizable>-->
-
-        <!-- Whether the user can maximize the window. Optional. Default true. -->
-        <!--<maximizable></maximizable>-->
-
-        <!-- Whether the user can resize the window. Optional. Default true. -->
-        <!--<resizable></resizable>-->
-
         <!-- The window's initial width in pixels. Optional. -->
-        <!--<width></width>-->
+        <width>1050</width>
 
         <!-- The window's initial height in pixels. Optional. -->
-        <!--<height></height>-->
+        <height>650</height>
 
         <!-- The window's initial x position. Optional. -->
         <!--<x></x>-->
@@ -84,19 +55,10 @@
         <!--<y></y>-->
 
         <!-- The window's minimum size, specified as a width/height pair in pixels, such as "400 200". Optional. -->
-        <!--<minSize></minSize>-->
+        <minSize>400 500</minSize>
 
         <!-- The window's initial maximum size, specified as a width/height pair in pixels, such as "1600 1200". Optional. -->
         <!--<maxSize></maxSize>-->
-
-        <!-- The aspect ratio of the app ("portrait" or "landscape" or "any"). Optional. Mobile only. Default is the natural orientation of the device -->
-        <!--<aspectRatio></aspectRatio>-->
-
-        <!-- Whether the app will begin auto-orienting on launch. Optional. Mobile only. Default false -->
-        <!--<autoOrients></autoOrients>-->
-
-        <!-- Whether the app launches in full screen. Optional. Mobile only. Default false -->
-        <!--<fullScreen></fullScreen>-->
 
         <!-- The render mode for the app (either auto, cpu, gpu, or direct). Optional. Default auto -->
         <renderMode>direct</renderMode>

@@ -6,6 +6,7 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.InvokeEvent;
 import flash.filesystem.File;
+import flash.filesystem.File;
 import flash.filesystem.FileMode;
 import flash.filesystem.FileStream;
 import flash.net.URLLoader;
@@ -36,12 +37,14 @@ add a "save" button
         _urlLoader.dataFormat = URLLoaderDataFormat.BINARY;
         _urlLoader.addEventListener(Event.COMPLETE, onLoad);
         _urlLoader.load(new URLRequest("http://s3.funkypandagame.com/startdust-particle-editor/stardust_editor_release.swf"));
+        //_urlLoader.load(new URLRequest("stardust-editor.swf")); // for testing
     }
 
     private function onInvoke(event : InvokeEvent) : void
     {
         if (event.currentDirectory != null && event.arguments.length > 0)
         {
+            //var directory:File = new File('C:/CODE/stardust-air/build') // for testing
             var directory:File = event.currentDirectory;
             var file:File = directory.resolvePath(event.arguments[0]);
             var fileStream:FileStream = new FileStream();
