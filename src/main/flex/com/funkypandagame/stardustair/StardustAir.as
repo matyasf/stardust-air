@@ -5,7 +5,7 @@ import flash.display.Loader;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.InvokeEvent;
-import flash.filesystem.File;
+import flash.events.TextEvent;
 import flash.filesystem.File;
 import flash.filesystem.FileMode;
 import flash.filesystem.FileStream;
@@ -30,6 +30,7 @@ add a "save" button
     private var loader : Loader = new Loader();
     private var _urlLoader : URLLoader = new URLLoader;
     private var loadedBA : ByteArray;
+    private var loadedFileName : String;
 
     public function StardustAir()
     {
@@ -45,14 +46,14 @@ add a "save" button
         if (event.currentDirectory != null && event.arguments.length > 0)
         {
             //var directory:File = new File('C:/CODE/stardust-air/build') // for testing
-            var directory:File = event.currentDirectory;
-            var file:File = directory.resolvePath(event.arguments[0]);
-            var fileStream:FileStream = new FileStream();
+            var directory : File = event.currentDirectory;
+            var file : File = directory.resolvePath(event.arguments[0]);
+            loadedFileName = file.name;
+            var fileStream : FileStream = new FileStream();
             fileStream.open(file, FileMode.READ);
             loadedBA = new ByteArray();
             fileStream.readBytes(loadedBA);
             fileStream.close();
-            NativeApplication.nativeApplication.activeWindow.title = file.name;
         }
     }
 
@@ -69,10 +70,10 @@ add a "save" button
     private function onLoaded(evt : Event) : void
     {
         Object(loader.content).mx_internal::isStageRoot = true;
-        //Object(loader.content).mx_internal::isBootstrapRoot = true;
         stage.addEventListener(Event.RESIZE, onResize);
         onResize();
         loader.content.addEventListener(FlexEvent.APPLICATION_COMPLETE, onStardustReady);
+        loader.content.addEventListener("setSimName", onSimNameChanged);
     }
 
     private function onStardustReady(evt : FlexEvent) : void
@@ -80,7 +81,7 @@ add a "save" button
         if (loadedBA)
         {
             var stardustTool : Object = Object(loader.content).application;
-            stardustTool.loadExternalSim(loadedBA);
+            stardustTool.loadExternalSim(loadedBA, loadedFileName);
         }
     }
 
@@ -89,5 +90,9 @@ add a "save" button
         IFlexDisplayObject(loader.content).setActualSize(stage.width, stage.height);
     }
 
+    private function onSimNameChanged(evt : TextEvent) : void
+    {
+        NativeApplication.nativeApplication.activeWindow.title = evt.text;
+    }
 }
 }
