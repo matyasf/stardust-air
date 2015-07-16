@@ -48,8 +48,15 @@ dependencies {
     airSDK group: 'com.adobe', name: 'AIRSDK', version: '15.0', ext: Os.isFamily(Os.FAMILY_WINDOWS) ? 'zip' : 'tbz2'
 }
 
+air {
+    applicationDescriptor = 'src/main/resources/StardustAir-app.xml'
+    fileOptions = [
+            '-C','src/main/resources/icons',
+            'icons'
+    ]
+}
+
 additionalCompilerOptions = [
-    // AS3 metadata
     '-keep-as3-metadata+=Inline,Embed,SWF,Transient',
     '-advanced-telemetry'
 ]

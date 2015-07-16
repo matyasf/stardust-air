@@ -3,6 +3,8 @@ package com.funkypandagame.stardustair {
 import flash.desktop.NativeApplication;
 import flash.display.Loader;
 import flash.display.Sprite;
+import flash.display.StageAlign;
+import flash.display.StageScaleMode;
 import flash.events.Event;
 import flash.events.InvokeEvent;
 import flash.events.TextEvent;
@@ -34,6 +36,8 @@ add a "save" button
 
     public function StardustAir()
     {
+        stage.align = StageAlign.TOP_LEFT;
+        stage.scaleMode = StageScaleMode.NO_SCALE;
         NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvoke);
         _urlLoader.dataFormat = URLLoaderDataFormat.BINARY;
         _urlLoader.addEventListener(Event.COMPLETE, onLoad);
@@ -92,7 +96,7 @@ add a "save" button
 
     private function onSimNameChanged(evt : TextEvent) : void
     {
-        NativeApplication.nativeApplication.activeWindow.title = evt.text;
+        NativeApplication.nativeApplication.openedWindows[0].title = evt.text;
     }
 }
 }
