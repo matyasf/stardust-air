@@ -59,7 +59,7 @@ air {
 additionalCompilerOptions = [
     '+swfVersion=26',
     '-keep-as3-metadata+=Inline,Embed,SWF,Transient',
-    '-advanced-telemetry',
+    '-advanced-telemetry'
 ]
 
 sdkAutoInstall {

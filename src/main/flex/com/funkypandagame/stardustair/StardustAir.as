@@ -13,11 +13,14 @@ import flash.events.TextEvent;
 import flash.filesystem.File;
 import flash.filesystem.FileMode;
 import flash.filesystem.FileStream;
+import flash.net.FileFilter;
 import flash.net.URLLoader;
 import flash.net.URLLoaderDataFormat;
 import flash.net.URLRequest;
 import flash.system.ApplicationDomain;
 import flash.system.LoaderContext;
+import flash.text.TextField;
+import flash.text.TextFormat;
 import flash.utils.ByteArray;
 
 import mx.core.IFlexDisplayObject;
@@ -27,9 +30,6 @@ import mx.events.FlexEvent;
 [SWF(backgroundColor="0x353535")]
 public class StardustAir extends Sprite {
 
-/* TODOs:
-add a "save" button
-*/
     public static const CACHED_FILENAME : String = "/stardust_editor.swf";
     private var loader : Loader = new Loader();
     private var _urlLoader : URLLoader = new URLLoader;
@@ -86,6 +86,7 @@ add a "save" button
     {
         var context : LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
         context.allowCodeImport = true;
+        context.parameters = {"isRunningInAIR":"true"};
         context.allowLoadBytesCodeExecution = true;
         loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onStardustMovieLoaded);
         loader.loadBytes(ba, context);
@@ -99,6 +100,7 @@ add a "save" button
         onResize();
         loader.content.addEventListener(FlexEvent.APPLICATION_COMPLETE, onStardustReady);
         loader.content.addEventListener("setSimName", onSimNameChanged);
+        loader.content.addEventListener("loadFile", onSimFileLoad);
     }
 
     private function onLoadError(e : Event) : void
@@ -117,17 +119,39 @@ add a "save" button
         }
         else
         {
-            trace("Stardust AIR: Unable to start",e)
+            trace("Stardust AIR: Unable to start",e);
+            var tf : TextField = new TextField();
+            tf.x = 15;
+            tf.y = 15;
+            tf.width = width - 15;
+            tf.height = height - 15;
+            tf.defaultTextFormat = new TextFormat("_sans", 25, 0x0);
+            tf.text = "Stardust AIR: Unable to start :( Do you have internet?\n" + e.toString();
+            addChild(tf);
         }
     }
 
     private function onStardustReady(evt : FlexEvent) : void
     {
         isAppReady = true;
+        var simFileToLoad : File = LocalSettings.getLastOpenedFile();
+        var stardustTool : Object = Object(loader.content).application;
         if (loadedBA)
         {
-            var stardustTool : Object = Object(loader.content).application;
             stardustTool.loadExternalSim(loadedBA, loadedFileName);
+        }
+        else if (simFileToLoad && simFileToLoad.exists)
+        {
+            var fileStream : FileStream = new FileStream();
+            fileStream.open(simFileToLoad, FileMode.READ);
+            var ba : ByteArray = new ByteArray();
+            fileStream.readBytes(ba);
+            fileStream.close();
+
+            var fileName : String = simFileToLoad.name;
+            var fileNameNoExtension : String = fileName.substr(0, fileName.lastIndexOf(".")  );
+
+            stardustTool.loadExternalSim(ba, fileNameNoExtension);
         }
     }
 
@@ -140,5 +164,31 @@ add a "save" button
     {
         NativeApplication.nativeApplication.openedWindows[0].title = evt.text;
     }
+
+    private function onSimFileLoad(event : Event) : void
+    {
+        var simFileToLoad : File = LocalSettings.getLastBrowsePath();
+        simFileToLoad.addEventListener(Event.SELECT, selectHandler);
+        simFileToLoad.browse( [new FileFilter( "Stardust editor project (*.sde)", "*.sde" )] );
+    }
+
+    private function selectHandler(e:Event):void
+    {
+        var simFileToLoad : File = e.target as File;
+        var fileStream : FileStream = new FileStream();
+        fileStream.open(simFileToLoad, FileMode.READ);
+        var ba : ByteArray = new ByteArray();
+        fileStream.readBytes(ba);
+        fileStream.close();
+
+        var fileName : String = simFileToLoad.name;
+        var fileNameNoExtension : String = fileName.substr(0, fileName.lastIndexOf(".")  );
+
+        LocalSettings.saveSettings(simFileToLoad);
+
+        var stardustTool : Object = Object(loader.content).application;
+        stardustTool.loadExternalSim(ba, fileNameNoExtension);
+    }
+
 }
 }
