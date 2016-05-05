@@ -27,7 +27,7 @@ import mx.core.IFlexDisplayObject;
 import mx.core.mx_internal;
 import mx.events.FlexEvent;
 
-[SWF(backgroundColor="0x353535")]
+[SWF(backgroundColor="0x353535",frameRate=60)]
 public class StardustAir extends Sprite {
 
     public static const CACHED_FILENAME : String = "/stardust_editor.swf";

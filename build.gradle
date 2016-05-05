@@ -25,7 +25,7 @@ version = '1.0'
 type = 'swf'
 srcDirs	= ['src/main/flex']
 mainClass = 'com/funkypandagame/stardustair/StardustAir.as'
-playerVersion = '15.0'
+playerVersion = '19.0'
 
 repositories {
     mavenLocal()
